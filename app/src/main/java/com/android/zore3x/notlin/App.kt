@@ -18,7 +18,6 @@ class App : Application() {
         super.onCreate()
         appDatabase = Room.databaseBuilder(applicationContext, AppDatabase::class.java, DATABASE_NAME)
                 .build()
-
     }
 
 }
