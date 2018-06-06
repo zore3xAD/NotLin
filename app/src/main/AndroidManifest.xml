@@ -20,7 +20,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".NoteActivity"
+            android:name=".activities.NoteActivity"
             android:label="@string/title_activity_note"
             android:parentActivityName=".activities.NoteListActivity"
             android:theme="@style/AppTheme.NoActionBar">
