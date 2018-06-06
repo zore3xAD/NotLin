@@ -24,7 +24,7 @@
     <include layout="@layout/content_note_list"/>
 
     <android.support.design.widget.FloatingActionButton
-        android:id="@+id/fab_editNote"
+        android:id="@+id/fab_addNote"
         android:layout_width="@dimen/fab_size"
         android:layout_height="@dimen/fab_size"
         android:layout_gravity="bottom|end"
