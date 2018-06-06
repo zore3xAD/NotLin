@@ -28,6 +28,15 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.android.zore3x.notlin.activities.NoteListActivity"/>
         </activity>
+        <activity
+            android:name=".activities.EditableNoteActivity"
+            android:label="@string/title_activity_editable_note"
+            android:parentActivityName=".activities.NoteListActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.android.zore3x.notlin.activities.NoteListActivity"/>
+        </activity>
     </application>
 
 </manifest>

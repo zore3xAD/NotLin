@@ -15,5 +15,5 @@ interface NoteDao {
     fun update(note: Note)
 
     @Query("select * from notes")
-    fun getAll()
+    fun getAll(): MutableList<Note>
 }
