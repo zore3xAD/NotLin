@@ -1,7 +1,6 @@
 package com.android.zore3x.notlin.activities
 
 import android.os.Bundle
-import android.support.design.widget.Snackbar
 import android.support.v7.app.AppCompatActivity
 import android.view.Menu
 import android.view.MenuItem
@@ -16,9 +15,8 @@ class NoteListActivity : AppCompatActivity() {
         setContentView(R.layout.activity_note_list)
         setSupportActionBar(toolbar)
 
-        fab_editNote.setOnClickListener { view ->
-            Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                    .setAction("Action", null).show()
+        fab_addNote.setOnClickListener { view ->
+            startActivity(EditableNoteActivity.getIntent(applicationContext))
         }
     }
 
