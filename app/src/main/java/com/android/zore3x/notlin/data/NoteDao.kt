@@ -9,7 +9,7 @@ import android.arch.persistence.room.Update
 interface NoteDao {
 
     @Insert
-    fun insert(note: Note)
+    fun insert(note: Note): Long
 
     @Update
     fun update(note: Note)
