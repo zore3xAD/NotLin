@@ -12,8 +12,12 @@ class NoteModel(val db: NoteDao) {
         InsertTask(callback).execute(data)
     }
 
-    fun select(callback: NoteContract.OnLoadCallback) {
-        SelectTask(callback).execute("")
+    fun selectAll(callback: NoteContract.OnLoadCallback) {
+        SelectAllTask(callback).execute()
+    }
+
+    fun selectFromId(id: Long, callback: NoteContract.OnSelectCallback) {
+        SelectFromIdTask(callback).execute(id)
     }
 
 
@@ -36,9 +40,21 @@ class NoteModel(val db: NoteDao) {
         }
     }
 
-    internal inner class SelectTask(var callback: NoteContract.OnLoadCallback) :
-            AsyncTask<String, Void, MutableList<Note>>() {
-        override fun doInBackground(vararg p0: String?): MutableList<Note> {
+    internal inner class SelectFromIdTask(var callback: NoteContract.OnSelectCallback) :
+            AsyncTask<Long, Void, Note>() {
+        override fun doInBackground(vararg p0: Long?): Note {
+            return db.getFromId(p0[0]!!)
+        }
+
+        override fun onPostExecute(result: Note?) {
+            super.onPostExecute(result)
+            callback.onComplete(result!!)
+        }
+    }
+
+    internal inner class SelectAllTask(var callback: NoteContract.OnLoadCallback) :
+            AsyncTask<Void, Void, MutableList<Note>>() {
+        override fun doInBackground(vararg p0: Void?): MutableList<Note>? {
             return db.getAll()
         }
 

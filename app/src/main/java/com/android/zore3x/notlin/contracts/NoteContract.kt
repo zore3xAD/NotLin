@@ -9,6 +9,10 @@ interface NoteContract {
         fun onError(message: String)
     }
 
+    interface OnSelectCallback {
+        fun onComplete(data: Note)
+    }
+
     interface OnInsertCallback {
         fun onComplete(id: Long)
         fun onError(message: String)

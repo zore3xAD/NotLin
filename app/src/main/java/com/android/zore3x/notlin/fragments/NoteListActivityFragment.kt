@@ -1,5 +1,6 @@
 package com.android.zore3x.notlin.fragments
 
+import android.content.Intent
 import android.support.v4.app.Fragment
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
@@ -8,6 +9,8 @@ import android.view.View
 import android.view.ViewGroup
 import com.android.zore3x.notlin.App
 import com.android.zore3x.notlin.R
+import com.android.zore3x.notlin.activities.EditableNoteActivity
+import com.android.zore3x.notlin.activities.NoteActivity
 import com.android.zore3x.notlin.adapters.NoteAdapter
 import com.android.zore3x.notlin.data.Note
 import com.android.zore3x.notlin.models.NoteModel
@@ -32,7 +35,12 @@ class NoteListActivityFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         adapter = NoteAdapter()
+        adapter.setClickListener(object : NoteAdapter.NoteClickListener {
+            override fun OnClick(view: View, position: Long) {
+                startActivity(NoteActivity.newIntent(context, position))
+            }
 
+        })
         noteList.layoutManager = LinearLayoutManager(activity.applicationContext)
         noteList.adapter = adapter
 

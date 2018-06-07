@@ -10,12 +10,22 @@ import com.android.zore3x.notlin.data.Note
 
 class NoteAdapter: RecyclerView.Adapter<NoteAdapter.NoteHolder>() {
 
+    interface NoteClickListener {
+        fun OnClick(view: View, position: Long)
+    }
+
     var data: MutableList<Note> = ArrayList()
         set(value) {
             data.clear()
             data.addAll(value)
             notifyDataSetChanged()
         }
+    var noteClickListener: NoteClickListener? = null
+
+    fun setClickListener(listener: NoteClickListener) {
+        this.noteClickListener = listener
+    }
+
     override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): NoteHolder =
             NoteHolder(LayoutInflater.from(parent?.context).inflate(R.layout.card_note, parent, false))
 
@@ -24,7 +34,10 @@ class NoteAdapter: RecyclerView.Adapter<NoteAdapter.NoteHolder>() {
     override fun onBindViewHolder(holder: NoteHolder?, position: Int) { holder?.bind(data[position]) }
 
 
-    inner class NoteHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    inner class NoteHolder(itemView: View) : RecyclerView.ViewHolder(itemView), View.OnClickListener {
+        override fun onClick(p0: View?) {
+            noteClickListener?.OnClick(p0!!, data[adapterPosition].id)
+        }
 
         var noteTitle: TextView
         var noteBody: TextView
@@ -34,6 +47,7 @@ class NoteAdapter: RecyclerView.Adapter<NoteAdapter.NoteHolder>() {
             noteTitle = itemView.findViewById(R.id.card_noteTitle)
             noteBody = itemView.findViewById(R.id.card_noteBody)
             noteCreateDate = itemView.findViewById(R.id.card_noteCreateDate)
+            itemView.setOnClickListener(this)
         }
 
         fun bind(value: Note) {

@@ -16,4 +16,7 @@ interface NoteDao {
 
     @Query("select * from notes")
     fun getAll(): MutableList<Note>
+
+    @Query("select * from notes where _id = :id")
+    fun getFromId(id: Long): Note
 }

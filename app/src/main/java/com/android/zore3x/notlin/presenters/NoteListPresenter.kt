@@ -16,7 +16,7 @@ class NoteListPresenter(val model: NoteModel) {
     fun viewIsReady() { loadData()}
 
     fun loadData() {
-        model.select(object : NoteContract.OnLoadCallback {
+        model.selectAll(object : NoteContract.OnLoadCallback {
             override fun onComplete(data: MutableList<Note>) {
                 view?.show(data)
             }
