@@ -49,9 +49,15 @@ class EditableNoteActivity : AppCompatActivity() {
         }
 
         fab_saveNote.setOnClickListener { view ->
-            val fragment = supportFragmentManager.findFragmentById(R.id.fragmentContainer)
-                    as EditableNoteFragment
-            fragment.save()
+            if(intent.hasExtra(EXTRA_POSITION)) {
+                val fragment = supportFragmentManager.findFragmentById(R.id.fragmentContainer)
+                        as EditableNoteFragment
+                fragment.update()
+            } else {
+                val fragment = supportFragmentManager.findFragmentById(R.id.fragmentContainer)
+                        as EditableNoteFragment
+                fragment.save()
+            }
         }
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
     }

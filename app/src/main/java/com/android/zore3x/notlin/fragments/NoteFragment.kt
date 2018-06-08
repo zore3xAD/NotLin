@@ -46,10 +46,14 @@ class NoteFragment : Fragment() {
 
         if(arguments != null) {
             idNote = arguments[ID_ARGS] as Long
-            presenter?.viewIsReady()
         }
 
         presenter?.viewIsReady()
+    }
+
+    override fun onResume() {
+        presenter?.viewIsReady()
+        super.onResume()
     }
 
     override fun onDestroy() {
@@ -57,7 +61,7 @@ class NoteFragment : Fragment() {
         super.onDestroy()
     }
 
-    fun getNoteId() = arguments.getLong(ID_ARGS)
+    fun getNoteId() = idNote
 
     fun show(data: Note) {
         note_titleText.text = data.title

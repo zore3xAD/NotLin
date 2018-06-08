@@ -1,9 +1,9 @@
 package com.android.zore3x.notlin.data
 
-import android.arch.persistence.room.Dao
-import android.arch.persistence.room.Insert
-import android.arch.persistence.room.Query
-import android.arch.persistence.room.Update
+import android.arch.persistence.room.*
+import android.arch.persistence.room.OnConflictStrategy.IGNORE
+import android.arch.persistence.room.OnConflictStrategy.REPLACE
+
 
 @Dao
 interface NoteDao {
@@ -11,7 +11,7 @@ interface NoteDao {
     @Insert
     fun insert(note: Note): Long
 
-    @Update
+    @Update(onConflict = IGNORE)
     fun update(note: Note)
 
     @Query("select * from notes")

@@ -18,4 +18,8 @@ interface NoteContract {
         fun onError(message: String)
     }
 
+    interface OnUpdateCallback {
+        fun onComplete()
+        fun onError()
+    }
 }

@@ -20,6 +20,10 @@ class NoteModel(val db: NoteDao) {
         SelectFromIdTask(callback).execute(id)
     }
 
+    fun update(data: Note, callback: NoteContract.OnUpdateCallback) {
+        UpdateTask(callback).execute(data)
+    }
+
 
     internal inner class InsertTask(var callback: NoteContract.OnInsertCallback) :
             AsyncTask<Note, Void, Long>() {
@@ -38,6 +42,23 @@ class NoteModel(val db: NoteDao) {
                 else -> callback.onComplete(result!!)
             }
         }
+    }
+
+    internal inner class UpdateTask(var callback: NoteContract.OnUpdateCallback) :
+            AsyncTask<Note, Void, Boolean>() {
+        override fun doInBackground(vararg p0: Note?): Boolean {
+            db.update(p0[0]!!)
+            return true
+        }
+
+        override fun onPostExecute(result: Boolean?) {
+            super.onPostExecute(result)
+            when (result) {
+                true -> callback.onComplete()
+                false -> callback.onError()
+            }
+        }
+
     }
 
     internal inner class SelectFromIdTask(var callback: NoteContract.OnSelectCallback) :

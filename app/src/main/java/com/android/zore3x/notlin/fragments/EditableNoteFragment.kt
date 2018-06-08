@@ -47,10 +47,7 @@ class EditableNoteFragment : Fragment() {
         presenter?.attach(this)
 
         if(arguments != null) {
-            val id = arguments[ID_ARG] as Long
-            if (id != null) {
-                presenter?.viewIsReady(id)
-            }
+            presenter?.viewIsReady()
         }
     }
 
@@ -59,18 +56,34 @@ class EditableNoteFragment : Fragment() {
         super.onDestroy()
     }
 
+    override fun onResume() {
+        presenter?.viewIsReady()
+        super.onResume()
+    }
+
     fun show(data: Note) {
         note_titleEdit.setText(data.title)
         note_bodyEdit.setText(data.body)
     }
 
     fun showToast(result: String) {
-        toast("Note added. ID = $result")
+        toast(result)
     }
 
-    fun getData(): Note = Note(note_titleEdit.text.toString(), note_bodyEdit.text.toString())
+    fun getData(): Note {
+        var data = Note(note_titleEdit.text.toString(), note_bodyEdit.text.toString())
+        if(arguments.isEmpty) {
+            return data
+        }
+        data.id = arguments[ID_ARG] as Long
+        return data
+    }
 
     fun close() {activity.finish()}
 
     fun save() { presenter?.insert()}
+
+    fun update() { presenter?.update()}
+
+    fun getLongId() = arguments[ID_ARG] as Long
 }

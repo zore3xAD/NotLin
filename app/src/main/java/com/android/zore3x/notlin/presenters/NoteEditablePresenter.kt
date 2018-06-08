@@ -27,8 +27,23 @@ class NoteEditablePresenter(val model: NoteModel) {
         })
     }
 
-    fun viewIsReady(id: Long) {
-        load(id)
+    fun update() {
+        val data = view?.getData()
+        model.update(view?.getData()!!, object : NoteContract.OnUpdateCallback {
+            override fun onComplete() {
+                view?.showToast("Update")
+                view?.close()
+            }
+
+            override fun onError() {
+                view?.showToast("error")
+            }
+
+        })
+    }
+
+    fun viewIsReady() {
+        load(view?.getLongId()!!)
     }
     fun load(id: Long) {
         model.selectFromId(id, object : NoteContract.OnSelectCallback {
