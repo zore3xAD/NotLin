@@ -1,15 +1,16 @@
 package com.android.zore3x.notlin.presenters
 
 import com.android.zore3x.notlin.contracts.NoteContract
-import com.android.zore3x.notlin.fragments.EditableNoteActivityFragment
+import com.android.zore3x.notlin.data.Note
+import com.android.zore3x.notlin.fragments.EditableNoteFragment
 import com.android.zore3x.notlin.models.NoteModel
 
 class NoteEditablePresenter(val model: NoteModel) {
 
 
-    var view: EditableNoteActivityFragment? = null
+    var view: EditableNoteFragment? = null
 
-    fun attach(view: EditableNoteActivityFragment) { this.view = view }
+    fun attach(view: EditableNoteFragment) { this.view = view }
 
     fun detach() { this.view = null }
 
@@ -23,8 +24,17 @@ class NoteEditablePresenter(val model: NoteModel) {
             override fun onError(message: String) {
                 view?.showToast(message)
             }
+        })
+    }
 
-
+    fun viewIsReady(id: Long) {
+        load(id)
+    }
+    fun load(id: Long) {
+        model.selectFromId(id, object : NoteContract.OnSelectCallback {
+            override fun onComplete(data: Note) {
+                view?.show(data)
+            }
         })
     }
 }

@@ -3,59 +3,52 @@ package com.android.zore3x.notlin.activities
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.support.design.widget.Snackbar
+import android.support.v4.app.Fragment
+import android.support.v4.app.FragmentManager
 import android.support.v7.app.AppCompatActivity
-import com.android.zore3x.notlin.App
 import com.android.zore3x.notlin.R
-import com.android.zore3x.notlin.data.Note
-import com.android.zore3x.notlin.models.NoteModel
-import com.android.zore3x.notlin.presenters.NotePresenter
+import com.android.zore3x.notlin.fragments.NoteFragment
 
 import kotlinx.android.synthetic.main.activity_note.*
-import kotlinx.android.synthetic.main.fragment_note.*
 
 class NoteActivity : AppCompatActivity() {
 
-    companion object {
-        val POSITION_EXTRA = "position"
+    fun createFragment(): Fragment {
 
-        fun newIntent(context: Context, position: Long): Intent {
+        val id= intent.getLongExtra(EXTRA_ID, -1)
+
+        return NoteFragment.newInstance(id)
+    }
+
+    companion object {
+        private const val EXTRA_ID = "id"
+
+        fun getIntent(context: Context, position: Long): Intent {
             var intent = Intent(context, NoteActivity::class.java)
-            intent.putExtra(POSITION_EXTRA, position)
+            intent.putExtra(EXTRA_ID, position)
             return intent
         }
     }
 
-    var presenter: NotePresenter? = null
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_note)
+        setContentView(R.layout.activity_note_detail)
         setSupportActionBar(toolbar)
 
-        fab_editNote.setOnClickListener { view ->
-            Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                    .setAction("Action", null).show()
+        val manager: FragmentManager = supportFragmentManager
+        var fragment: Fragment? = manager.findFragmentById(R.id.fragmentContainer)
+
+        if (fragment == null) {
+            fragment = createFragment()
+            manager.beginTransaction()
+                    .add(R.id.fragmentContainer, fragment)
+                    .commit()
         }
+
+        fab_editNote.setOnClickListener { view ->
+            startActivity(EditableNoteActivity.getIntent(applicationContext, intent.extras[EXTRA_ID] as Long))
+        }
+
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
-
-        presenter = NotePresenter(NoteModel(App.appDatabase.noteDao()))
-        presenter?.attach(this)
-        presenter?.viewIsReady()
-
     }
-
-    override fun onDestroy() {
-        presenter?.detach()
-        super.onDestroy()
-    }
-
-    fun getNoteId() = intent.getLongExtra(POSITION_EXTRA, -1)
-
-    fun show(data: Note) {
-        note_titleText.text = data.title
-        note_bodyText.text = data.body
-        note_createDateText.text = data.getFormatDate()
-    }
-
 }

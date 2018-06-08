@@ -2,14 +2,14 @@ package com.android.zore3x.notlin.presenters
 
 import com.android.zore3x.notlin.contracts.NoteContract
 import com.android.zore3x.notlin.data.Note
-import com.android.zore3x.notlin.fragments.NoteListActivityFragment
+import com.android.zore3x.notlin.fragments.NoteListFragment
 import com.android.zore3x.notlin.models.NoteModel
 
 class NoteListPresenter(val model: NoteModel) {
 
-    var view: NoteListActivityFragment? = null
+    var view: NoteListFragment? = null
 
-    fun attach(view: NoteListActivityFragment) { this.view = view}
+    fun attach(view: NoteListFragment) { this.view = view}
 
     fun detach() {this.view = null}
 
