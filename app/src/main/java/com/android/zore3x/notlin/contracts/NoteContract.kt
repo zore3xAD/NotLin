@@ -11,6 +11,7 @@ interface NoteContract {
 
     interface OnSelectCallback {
         fun onComplete(data: Note)
+        fun onError(message: String)
     }
 
     interface OnInsertCallback {
@@ -19,6 +20,11 @@ interface NoteContract {
     }
 
     interface OnUpdateCallback {
+        fun onComplete()
+        fun onError()
+    }
+
+    interface OnDeleteCallback {
         fun onComplete()
         fun onError()
     }

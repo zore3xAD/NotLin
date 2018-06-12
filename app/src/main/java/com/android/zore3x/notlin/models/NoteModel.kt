@@ -24,6 +24,10 @@ class NoteModel(val db: NoteDao) {
         UpdateTask(callback).execute(data)
     }
 
+    fun delete(data: Note, callback: NoteContract.OnDeleteCallback) {
+        DeleteTask(callback).execute(data)
+    }
+
 
     internal inner class InsertTask(var callback: NoteContract.OnInsertCallback) :
             AsyncTask<Note, Void, Long>() {
@@ -42,6 +46,23 @@ class NoteModel(val db: NoteDao) {
                 else -> callback.onComplete(result!!)
             }
         }
+    }
+
+    internal inner class DeleteTask(var callback: NoteContract.OnDeleteCallback) :
+            AsyncTask<Note, Void, Boolean>() {
+        override fun doInBackground(vararg p0: Note?): Boolean? {
+            db.delete(p0[0]!!)
+            return true
+        }
+
+        override fun onPostExecute(result: Boolean?) {
+            super.onPostExecute(result)
+            when (result) {
+                true -> callback.onComplete()
+                false -> callback.onError()
+            }
+        }
+
     }
 
     internal inner class UpdateTask(var callback: NoteContract.OnUpdateCallback) :
@@ -69,7 +90,11 @@ class NoteModel(val db: NoteDao) {
 
         override fun onPostExecute(result: Note?) {
             super.onPostExecute(result)
-            callback.onComplete(result!!)
+            if(result == null) {
+                callback.onError("not Found")
+            } else {
+                callback.onComplete(result)
+            }
         }
     }
 

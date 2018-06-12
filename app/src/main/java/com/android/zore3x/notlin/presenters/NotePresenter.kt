@@ -9,14 +9,35 @@ class NotePresenter(val model: NoteModel) {
 
     var view: NoteFragment? = null
 
+    lateinit var note: Note
+
     fun attach(view: NoteFragment) { this.view = view}
     fun detach() {this.view = null}
     fun viewIsReady() {loadNote()}
+
     fun loadNote() {
         val id = view?.getNoteId()
         model.selectFromId(id!!, object : NoteContract.OnSelectCallback {
+            override fun onError(message: String) {
+                view?.showToast(message)
+            }
+
             override fun onComplete(data: Note) {
-                view?.show(data)
+                note = data
+                view?.show(note)
+            }
+        })
+    }
+
+    fun delete() {
+        model.delete(note, object : NoteContract.OnDeleteCallback {
+            override fun onComplete() {
+                view?.showToast("Deleted")
+                view?.close()
+            }
+
+            override fun onError() {
+                view?.showToast("error")
             }
         })
     }

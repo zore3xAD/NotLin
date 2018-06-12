@@ -9,7 +9,7 @@ import java.text.SimpleDateFormat
 import java.util.*
 
 @Entity(tableName = "notes")
-class Note : BaseColumns {
+class Note {
 
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "_id")

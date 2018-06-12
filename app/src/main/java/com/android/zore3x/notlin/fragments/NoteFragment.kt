@@ -11,6 +11,7 @@ import com.android.zore3x.notlin.data.Note
 import com.android.zore3x.notlin.models.NoteModel
 import com.android.zore3x.notlin.presenters.NotePresenter
 import kotlinx.android.synthetic.main.fragment_note.*
+import org.jetbrains.anko.support.v4.toast
 
 /**
  * A placeholder fragment containing a simple view.
@@ -68,4 +69,9 @@ class NoteFragment : Fragment() {
         note_bodyText.text = data.body
         note_createDateText.text = data.getFormatDate()
     }
+
+    fun delete() {presenter?.delete()}
+
+    fun showToast(message: String) { toast(message)}
+    fun close() {activity.finish()}
 }

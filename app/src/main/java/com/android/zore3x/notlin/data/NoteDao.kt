@@ -14,6 +14,9 @@ interface NoteDao {
     @Update(onConflict = IGNORE)
     fun update(note: Note)
 
+    @Delete
+    fun delete(note: Note)
+
     @Query("select * from notes")
     fun getAll(): MutableList<Note>
 
